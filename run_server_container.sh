@@ -6,16 +6,18 @@ set -x
 
 # Build image and name it bsegault/docker-http
 # We tag it so we now what's inside without inspecting
-docker build -t bsegault/docker-http:03_simple .
+docker build -t bsegault/docker-http:04_smart_env .
 
 # -d: Run the container in detached mode
 # -p: Map host port 8080 to container port 80
-# Better: --name: give a name to the container to manage it
-# Better: Start the image as a program: possible to give it arguments that must be documented
+# --name: give a name to the container to manage it
+# Better: --env: give options by env: no need to know the arguments taken by the app; we have the meaning by variable name
+#   No need to even document the program, just detail env vars.
 docker run -d \
     -p 8080:80 \
     --name docker_http \
-    bsegault/docker-http:03_simple 2048
+    --env MAX_HEADER_SIZE=4096 \
+    bsegault/docker-http:04_smart_env
 
 # Wait a bit
 sleep 1
@@ -23,5 +25,5 @@ sleep 1
 # Test it
 curl http://localhost:8080
 
-# Better: cleanup!
+# Cleanup!
 docker rm -f docker_http
