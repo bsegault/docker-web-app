@@ -1,8 +1,10 @@
 const http = require('http')
 
-// Better: set server option to the need of our potential users (only as an example here)
+// Better: server option not hard-coded
+const maxHeaderSize = process.argv && Number.parseInt(process.argv[2])
+
 http
-  .createServer({ maxHeaderSize: 8192 }, (req, res) => {
+  .createServer({ maxHeaderSize: maxHeaderSize }, (req, res) => {
     res.write('Hello World!\n')
     res.end()
   })
